@@ -6,7 +6,7 @@ import { MainButton } from "../components/mainButton";
 export const HomeScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <MainButton text="Go to game" />
+      <MainButton text="Go to game" dest="Main" />
     </SafeAreaView>
   );
 };

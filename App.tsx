@@ -4,18 +4,33 @@ import * as eva from "@eva-design/eva";
 import { ApplicationProvider, Layout, Text } from "@ui-kitten/components";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { createStore, combineReducers } from "redux";
+import { Provider } from "react-redux";
+
 import { HomeScreen } from "./src/screens/home";
+import { MainScreen } from "./src/screens/mainScreen";
+import { modifyStatement, updateItems } from "./redux/reducer";
 
 const Stack = createStackNavigator();
+
+const store = createStore(
+  combineReducers({
+    amount: modifyStatement,
+    items: updateItems,
+  })
+);
 
 export default function App() {
   return (
     <ApplicationProvider {...eva} theme={eva.light}>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home" headerMode="none">
-          <Stack.Screen name="Home" component={HomeScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <Provider store={store}>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Home" headerMode="none">
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Main" component={MainScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
     </ApplicationProvider>
   );
 }

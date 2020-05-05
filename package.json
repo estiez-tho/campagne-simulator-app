@@ -24,12 +24,15 @@
     "react-native-svg": "11.0.1",
     "react-native-web": "~0.11.7",
     "react-navigation": "^4.3.9",
-    "react-navigation-hooks": "^1.1.0"
+    "react-navigation-hooks": "^1.1.0",
+    "react-redux": "^7.2.0",
+    "redux": "^4.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
     "@types/react": "~16.9.23",
     "@types/react-native": "~0.61.17",
+    "@types/react-redux": "^7.1.8",
     "babel-preset-expo": "~8.1.0",
     "typescript": "~3.8.3"
   },
