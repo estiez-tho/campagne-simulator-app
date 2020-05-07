@@ -9,16 +9,11 @@ import { Provider } from "react-redux";
 
 import { HomeScreen } from "./src/screens/home";
 import { MainScreen } from "./src/screens/mainScreen";
-import { modifyStatement, updateItems } from "./redux/reducer";
+import { updateItems } from "./redux/reducer";
 
 const Stack = createStackNavigator();
 
-const store = createStore(
-  combineReducers({
-    amount: modifyStatement,
-    items: updateItems,
-  })
-);
+const store = createStore(updateItems);
 
 export default function App() {
   return (

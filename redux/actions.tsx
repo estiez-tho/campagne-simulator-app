@@ -1,9 +1,14 @@
-import { INCREASE, DECREASE, PURCHASE_ITEM } from "./actionTypes";
+import {
+  INCREASE,
+  DECREASE,
+  PURCHASE_ITEM,
+  UPDATE_PROGRESSION,
+} from "./actionTypes";
 
 export interface actionProps {
   type: string;
-  amount?: number;
-  itemId?: string;
+  itemId: string;
+  previousTime?: number;
 }
 
 export const increase = (amount: number) => {
@@ -16,4 +21,8 @@ export const decrease = (amount: number) => {
 
 export const purchase = (itemId: string) => {
   return { type: PURCHASE_ITEM, itemId };
+};
+
+export const updateProgression = (itemId: string) => {
+  return { type: UPDATE_PROGRESSION, itemId };
 };

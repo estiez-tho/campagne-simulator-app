@@ -1,10 +1,12 @@
 import React from "react";
 import { StyleSheet, SafeAreaView, FlatList } from "react-native";
-import { ApplicationProvider, Layout, Text } from "@ui-kitten/components";
-import { MainButton } from "../components/mainButton";
-import { ListItem, listItemProps } from "../components/listItem";
-import { useSelector } from "react-redux";
+import { Layout, Text } from "@ui-kitten/components";
+import { ListItem } from "../components/listItem";
+import { useSelector, useDispatch } from "react-redux";
 import { DATA } from "../data/items";
+import { updateInterval } from "../data/updateInterval";
+import { updateProgression } from "../../redux/actions";
+
 const Header = () => {
   const amount = useSelector((state) => state.amount);
   return (
@@ -15,6 +17,15 @@ const Header = () => {
 };
 
 export const MainScreen = () => {
+  const dispacth = useDispatch();
+  setInterval(() => {
+    DATA.forEach((elem, index) => {
+      if (!elem.id)
+        throw new Error(`could not get ID at index : ${index}; got ${elem}`);
+      dispacth(updateProgression(elem.id));
+    });
+  }, updateInterval);
+
   return (
     <SafeAreaView style={styles.container}>
       <Header />

@@ -1,33 +1,39 @@
 export const initialItems: {
-  [id: string]: { quantity: number; disabled: boolean; progression: number };
+  [id: string]: {
+    quantity: number;
+    disabled: boolean;
+    progression: number;
+    progressionLastUpdated: Date;
+  };
 } = {
   "1": {
     quantity: 1,
     disabled: false,
     progression: 100,
+    progressionLastUpdated: new Date(),
   },
   "2": {
-    id: "2",
     quantity: 2,
     disabled: false,
-    progression: 80,
+    progression: 1200,
+    progressionLastUpdated: new Date(),
   },
   "3": {
-    id: "3",
     quantity: 3,
     disabled: false,
-    progression: 70,
+    progression: 2300,
+    progressionLastUpdated: new Date(),
   },
   "4": {
-    id: "4",
-    quantity: 1,
+    quantity: 0,
     disabled: true,
-    progression: 90,
+    progression: 3400,
+    progressionLastUpdated: new Date(),
   },
   "5": {
-    id: "5",
-    quantity: 1,
+    quantity: 0,
     disabled: true,
-    progression: 90,
+    progression: 4500,
+    progressionLastUpdated: new Date(),
   },
 };

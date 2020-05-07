@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, ImageSourcePropType } from "react-native";
 import { Button, Layout, Text, Avatar } from "@ui-kitten/components";
 import { useSelector, useDispatch } from "react-redux";
 import { Icons } from "./icons";
 import { getTimeFromSeconds } from "../utils/timer";
+import { purchase } from "../../redux/actions";
 
 export interface listItemProps {
   id: string;
@@ -12,8 +13,9 @@ export interface listItemProps {
   duration: number;
 }
 
-const ProgressBar: React.FC<listItemProps> = ({ id }) => {
+const ProgressBar: React.FC<listItemProps> = ({ id, duration }) => {
   const progression = useSelector((state) => state.items[id].progression);
+  const percentage = Math.floor((progression * 100) / duration);
   return (
     <Layout style={styles.progressBarContainer}>
       <Layout
@@ -22,7 +24,7 @@ const ProgressBar: React.FC<listItemProps> = ({ id }) => {
           { backgroundColor: "#E9E9E9", borderColor: "grey", borderWidth: 3 },
         ]}
       >
-        <Layout style={[styles.progressBar, { width: `${progression}%` }]} />
+        <Layout style={[styles.progressBar, { width: `${percentage}%` }]} />
       </Layout>
     </Layout>
   );
@@ -30,14 +32,25 @@ const ProgressBar: React.FC<listItemProps> = ({ id }) => {
 
 const PurchaseItem: React.FC<listItemProps> = ({ duration, price, id }) => {
   const progression = useSelector((state) => state.items[id].progression);
+  const amount = useSelector((state) => state.amount);
+  const remainingTime = Math.ceil((duration - progression) / 1000);
+  const dispatch = useDispatch();
+  const onPress = () => {
+    dispatch(purchase(id));
+  };
   return (
     <Layout style={styles.purchaseItem}>
       <Layout style={styles.timer}>
         <Text style={{ fontSize: 30, color: "#E9E9E9" }}>
-          {getTimeFromSeconds(duration)}
+          {getTimeFromSeconds(remainingTime)}
         </Text>
       </Layout>
-      <Button style={styles.priceButton} status="basic">{`${price} $`}</Button>
+      <Button
+        style={styles.priceButton}
+        status="basic"
+        disabled={amount < price}
+        onPress={onPress}
+      >{`${price} $`}</Button>
     </Layout>
   );
 };
@@ -72,9 +85,19 @@ const ActiveComponent: React.FC<listItemProps> = (props) => {
   );
 };
 
-const DisabledComponent: React.FC<listItemProps> = ({ id, name }) => {
+const DisabledComponent: React.FC<listItemProps> = ({ id, name, price }) => {
+  const amount = useSelector((state) => state.amount);
+  const dispatch = useDispatch();
+  const onPress = () => {
+    dispatch(purchase(id));
+  };
   return (
-    <Button style={styles.disabledContainer} status="basic">
+    <Button
+      style={styles.disabledContainer}
+      status="basic"
+      disabled={amount < price}
+      onPress={onPress}
+    >
       {`Purchase ${name}`}
     </Button>
   );
@@ -83,14 +106,17 @@ const DisabledComponent: React.FC<listItemProps> = ({ id, name }) => {
 export const ListItem: React.FC<listItemProps> = (props: listItemProps) => {
   const id = props.id;
   const disabled = useSelector((state) => state.items[id].disabled);
+
   return (
-    <Layout style={styles.container}>
-      {disabled ? (
-        <DisabledComponent {...props} />
-      ) : (
-        <ActiveComponent {...props} />
-      )}
-    </Layout>
+    <>
+      <Layout style={styles.container}>
+        {disabled ? (
+          <DisabledComponent {...props} />
+        ) : (
+          <ActiveComponent {...props} />
+        )}
+      </Layout>
+    </>
   );
 };
 
