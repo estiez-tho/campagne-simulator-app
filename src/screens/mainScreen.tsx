@@ -11,7 +11,9 @@ const Header = () => {
   const amount = useSelector((state) => state.amount);
   return (
     <Layout style={styles.header}>
-      <Text>{`SCORE : ${amount}`}</Text>
+      <Text
+        style={{ fontSize: 30, color: "#E9E9E9" }}
+      >{`SCORE : ${amount}`}</Text>
     </Layout>
   );
 };
@@ -57,6 +59,7 @@ const styles = StyleSheet.create({
     height: "20%",
     width: "100%",
     backgroundColor: "green",
+    flexDirection: "column",
     justifyContent: "center",
     paddingLeft: "10%",
   },

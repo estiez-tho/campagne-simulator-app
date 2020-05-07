@@ -4,7 +4,7 @@ import { initialItems } from "../items.mock";
 import { DATA } from "../src/data/items";
 
 const initialState = {
-  amount: 0,
+  amount: 10,
   items: initialItems,
 };
 
@@ -22,13 +22,12 @@ export const updateItems = (state = initialState, action: actionProps) => {
             [id]: {
               ...state.items[id],
               quantity: state.items[id].quantity + 1,
-              disabled: false,
               progressionLastUpdated: new Date(),
             },
           },
         };
     case UPDATE_PROGRESSION:
-      if (typeof id === "string" && !state.items[id].disabled) {
+      if (typeof id === "string" && state.items[id].quantity > 0) {
         const progressionLastUpdated = state.items[id].progressionLastUpdated;
         const currentTime = new Date();
         const deltaTime =

@@ -105,12 +105,12 @@ const DisabledComponent: React.FC<listItemProps> = ({ id, name, price }) => {
 
 export const ListItem: React.FC<listItemProps> = (props: listItemProps) => {
   const id = props.id;
-  const disabled = useSelector((state) => state.items[id].disabled);
+  const quantity = useSelector((state) => state.items[id].quantity);
 
   return (
     <>
       <Layout style={styles.container}>
-        {disabled ? (
+        {quantity === 0 ? (
           <DisabledComponent {...props} />
         ) : (
           <ActiveComponent {...props} />
