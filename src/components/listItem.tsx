@@ -73,7 +73,7 @@ const PurchaseItem: React.FC<listItemProps> = ({ id }) => {
 
 const ItemDescription: React.FC<listItemProps> = ({ id, name }) => {
   const quantity = useSelector((state) => state.items[id].quantity);
-  const image: ImageSourcePropType = Icons[`item${id + 1}`];
+  const image: ImageSourcePropType = Icons[`item${id}`];
   return (
     <Layout style={styles.itemDescriptionContainer}>
       <Avatar style={styles.icon} source={image} />

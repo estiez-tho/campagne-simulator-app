@@ -16,13 +16,3 @@ export const getUserInfo = backendAndStorageFunction(
   backend.getUserInfo,
   storage.getUserInfo
 );
-
-export const pushPurchases = backendAndStorageFunction(
-  backend.pushPurchases,
-  storage.pushPurchases
-);
-
-export const updateUserInfo = backendAndStorageFunction(
-  backend.updateUserInfo,
-  storage.updateUserInfo
-);
