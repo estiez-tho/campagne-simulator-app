@@ -1,1 +1,1 @@
-export const updateInterval = 1000;
+export const updateInterval = 50;

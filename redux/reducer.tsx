@@ -24,13 +24,17 @@ export const updateItems = (state = initData, action: actionProps) => {
         nextGoal,
         numberOfReachedGoal,
         progressionLastUpdated,
+        progression,
       } = state.items[id];
 
       if (typeof id === "string" && state.amount >= price) {
         const previousPrice = price;
         price = updatePrice(price);
 
-        if (quantity === 0) progressionLastUpdated = new Date();
+        if (quantity === 0) {
+          progressionLastUpdated = new Date();
+          progression = 0;
+        }
 
         quantity = quantity + 1;
 
@@ -50,6 +54,7 @@ export const updateItems = (state = initData, action: actionProps) => {
               quantity,
               price,
               progressionLastUpdated,
+              progression,
             },
           },
         };

@@ -18,8 +18,11 @@ const ProgressBar: React.FC<listItemProps> = ({ id }) => {
   const duration = useSelector((state) => state.items[id].duration);
   const progression = useSelector((state) => state.items[id].progression);
 
-  const percentage =
-    duration === 1000 ? 100 : Math.floor((progression * 100) / duration);
+  const isMinTime = duration === 1000;
+
+  const percentage = isMinTime
+    ? 100
+    : Math.floor((progression * 100) / duration);
 
   return (
     <Layout style={styles.progressBarContainer}>
@@ -29,7 +32,13 @@ const ProgressBar: React.FC<listItemProps> = ({ id }) => {
           { backgroundColor: "#E9E9E9", borderColor: "grey", borderWidth: 3 },
         ]}
       >
-        <Layout style={[styles.progressBar, { width: `${percentage}%` }]} />
+        <Layout
+          style={[
+            styles.progressBar,
+            { width: `${percentage}%` },
+            isMinTime && { backgroundColor: "green" },
+          ]}
+        />
       </Layout>
     </Layout>
   );

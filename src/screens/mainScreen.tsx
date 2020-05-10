@@ -8,7 +8,7 @@ import { updateInterval } from "../data/updateInterval";
 import { updateProgression, setState } from "../../redux/actions";
 import { getUserInfo } from "../api/index";
 
-const USER_ID = "5eb7cdb28ee82819d160e80b";
+const USER_ID = "5eb83ef7d14cdb201dc4d7da";
 
 const Header = () => {
   const amount = useSelector((state) => state.amount);
