@@ -23,7 +23,9 @@ const Header = () => {
 
 export const MainScreen = () => {
   const dispatch = useDispatch();
+
   const items = useSelector((state) => state.items);
+
   const fetchUserInfo = async () => {
     if (Object.keys(items).length === 0) {
       try {
@@ -37,10 +39,7 @@ export const MainScreen = () => {
 
   useEffect(() => {
     fetchUserInfo();
-    return () => {
-      console.log("Retrieved info");
-    };
-  }, []);
+  });
 
   const initTimer = () => {
     return setInterval(() => {

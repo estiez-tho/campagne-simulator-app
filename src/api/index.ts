@@ -4,10 +4,10 @@ import * as storage from "./storage";
 function backendAndStorageFunction(backendFunction: any, storageFunction: any) {
   return async (...args: any[]) => {
     try {
-      const res = await backendFunction(...args);
+      const res = await storageFunction(...args);
       return res;
     } catch (err) {
-      return await storageFunction(...args);
+      return await backendFunction(...args);
     }
   };
 }

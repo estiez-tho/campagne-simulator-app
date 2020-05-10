@@ -26,6 +26,8 @@ export function updateState(state: any) {
 
     const deltaTime = currentTime.getTime() - progressionLastUpdated.getTime();
 
+    const numberOfCycles = Math.floor((progression + deltaTime) / duration);
+
     const cycleFinished = Math.floor((progression + deltaTime) / duration) >= 1;
 
     progression = (progression + deltaTime) % duration;
@@ -36,7 +38,7 @@ export function updateState(state: any) {
         numberOfReachedGoal
       );
       numberOfReachedGoal = 0;
-      deltaAmount += quantity * reward;
+      deltaAmount += quantity * reward * numberOfCycles;
     }
     updatedItems[id] = {
       ...updatedItems[id],
