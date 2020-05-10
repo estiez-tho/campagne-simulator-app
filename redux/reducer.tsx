@@ -1,55 +1,66 @@
-import { PURCHASE_ITEM, UPDATE_PROGRESSION } from "./actionTypes";
+import { PURCHASE_ITEM, UPDATE_PROGRESSION, SET_STATE } from "./actionTypes";
 import { actionProps } from "./actions";
-import { initialItems } from "../items.mock";
-import { DATA } from "../src/data/items";
+import { initData } from "../src/data/initData";
+import {
+  updateState,
+  updateGoalBasedOnQuantity,
+  updatePrice,
+} from "../gameLogic/index";
 
-const initialState = {
-  amount: 10,
-  items: initialItems,
-};
+export const updateItems = (state = initData, action: actionProps) => {
+  let updatedState;
+  let id;
 
-export const updateItems = (state = initialState, action: actionProps) => {
-  const id = action.itemId;
-  if (!id) return state;
-  const { price, duration } = DATA[DATA.findIndex((elem) => elem.id === id)];
   switch (action.type) {
+    case SET_STATE:
+      return updateState(action.payload);
     case PURCHASE_ITEM:
-      if (typeof id === "string" && state.amount >= price)
+      id = action.itemId;
+      if (!id) return state;
+
+      let {
+        price,
+        quantity,
+        nextGoal,
+        numberOfReachedGoal,
+        progressionLastUpdated,
+      } = state.items[id];
+
+      if (typeof id === "string" && state.amount >= price) {
+        const previousPrice = price;
+        price = updatePrice(price);
+
+        if (quantity === 0) progressionLastUpdated = new Date();
+
+        quantity = quantity + 1;
+
+        let goal = updateGoalBasedOnQuantity(
+          quantity,
+          nextGoal,
+          numberOfReachedGoal
+        );
+
         return {
-          amount: state.amount - price,
+          amount: state.amount - previousPrice,
           items: {
             ...state.items,
             [id]: {
               ...state.items[id],
-              quantity: state.items[id].quantity + 1,
-              progressionLastUpdated: new Date(),
-            },
-          },
-        };
-    case UPDATE_PROGRESSION:
-      if (typeof id === "string" && state.items[id].quantity > 0) {
-        const progressionLastUpdated = state.items[id].progressionLastUpdated;
-        const currentTime = new Date();
-        const deltaTime =
-          currentTime.getTime() - progressionLastUpdated.getTime();
-        const newProgression =
-          (state.items[id].progression + deltaTime) % duration;
-        const deltaAmount =
-          Math.floor((state.items[id].progression + deltaTime) / duration) *
-          price *
-          state.items[id].quantity;
-        return {
-          amount: state.amount + deltaAmount,
-          items: {
-            ...state.items,
-            [id]: {
-              ...state.items[id],
-              progression: newProgression,
-              progressionLastUpdated: currentTime,
+              ...goal,
+              quantity,
+              price,
+              progressionLastUpdated,
             },
           },
         };
       }
+      return state;
+    case UPDATE_PROGRESSION:
+      updatedState = updateState(state);
+      return {
+        ...state,
+        ...updatedState,
+      };
     default:
       return state;
   }

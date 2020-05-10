@@ -3,6 +3,7 @@ import {
   DECREASE,
   PURCHASE_ITEM,
   UPDATE_PROGRESSION,
+  SET_STATE,
 } from "./actionTypes";
 
 export interface actionProps {
@@ -23,6 +24,10 @@ export const purchase = (itemId: string) => {
   return { type: PURCHASE_ITEM, itemId };
 };
 
-export const updateProgression = (itemId: string) => {
-  return { type: UPDATE_PROGRESSION, itemId };
+export const updateProgression = () => {
+  return { type: UPDATE_PROGRESSION };
+};
+
+export const setState = (payload: any) => {
+  return { type: SET_STATE, payload };
 };

@@ -9,10 +9,12 @@
   },
   "dependencies": {
     "@eva-design/eva": "^2.0.0-alpha.1",
+    "@react-native-community/async-storage": "^1.10.0",
     "@react-native-community/masked-view": "0.1.6",
     "@react-navigation/native": "^5.2.3",
     "@react-navigation/stack": "^5.2.18",
     "@ui-kitten/components": "^5.0.0-alpha.1",
+    "axios": "^0.19.2",
     "expo": "~37.0.3",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
@@ -26,7 +28,9 @@
     "react-navigation": "^4.3.9",
     "react-navigation-hooks": "^1.1.0",
     "react-redux": "^7.2.0",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0",
+    "expo-secure-store": "~8.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

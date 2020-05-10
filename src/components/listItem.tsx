@@ -11,11 +11,16 @@ export interface listItemProps {
   name: string;
   price: number;
   duration: number;
+  reward: number;
 }
 
-const ProgressBar: React.FC<listItemProps> = ({ id, duration }) => {
+const ProgressBar: React.FC<listItemProps> = ({ id }) => {
+  const duration = useSelector((state) => state.items[id].duration);
   const progression = useSelector((state) => state.items[id].progression);
-  const percentage = Math.floor((progression * 100) / duration);
+
+  const percentage =
+    duration === 1000 ? 100 : Math.floor((progression * 100) / duration);
+
   return (
     <Layout style={styles.progressBarContainer}>
       <Layout
@@ -30,7 +35,9 @@ const ProgressBar: React.FC<listItemProps> = ({ id, duration }) => {
   );
 };
 
-const PurchaseItem: React.FC<listItemProps> = ({ duration, price, id }) => {
+const PurchaseItem: React.FC<listItemProps> = ({ id }) => {
+  const price = useSelector((state) => state.items[id].price);
+  const duration = useSelector((state) => state.items[id].duration);
   const progression = useSelector((state) => state.items[id].progression);
   const amount = useSelector((state) => state.amount);
   const remainingTime = Math.ceil((duration - progression) / 1000);
@@ -57,7 +64,7 @@ const PurchaseItem: React.FC<listItemProps> = ({ duration, price, id }) => {
 
 const ItemDescription: React.FC<listItemProps> = ({ id, name }) => {
   const quantity = useSelector((state) => state.items[id].quantity);
-  const image: ImageSourcePropType = Icons[`item${id}`];
+  const image: ImageSourcePropType = Icons[`item${id + 1}`];
   return (
     <Layout style={styles.itemDescriptionContainer}>
       <Avatar style={styles.icon} source={image} />
