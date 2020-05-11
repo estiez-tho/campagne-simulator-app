@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, SafeAreaView, FlatList } from "react-native";
-import { Layout, Text } from "@ui-kitten/components";
+import { Layout, Text, Spinner } from "@ui-kitten/components";
 import { ListItem, listItemProps } from "../components/listItem";
 import { useSelector, useDispatch } from "react-redux";
-import { DATA } from "../data/items";
 import { updateInterval } from "../data/updateInterval";
 import { updateProgression, setState } from "../../redux/actions";
 import { getUserInfo } from "../api/index";
@@ -21,36 +20,21 @@ const Header = () => {
   );
 };
 
-export const MainScreen = () => {
+export const GameScreen = () => {
   const dispatch = useDispatch();
 
   const items = useSelector((state) => state.items);
 
-  const fetchUserInfo = async () => {
-    if (Object.keys(items).length === 0) {
-      try {
-        const payload = await getUserInfo(USER_ID);
-        dispatch(setState(payload.data));
-      } catch (err) {
-        throw err;
-      }
-    }
-  };
-
-  useEffect(() => {
-    fetchUserInfo();
-  });
-
-  const initTimer = () => {
+  const updateTimer = () => {
     return setInterval(() => {
-      dispatch(updateProgression());
+      if (Object.keys(items).length > 0) dispatch(updateProgression());
     }, updateInterval);
   };
 
   useEffect(() => {
-    const interval = initTimer();
+    const timerInterval = updateTimer();
     return () => {
-      clearInterval(interval);
+      clearInterval(timerInterval);
     };
   });
 
@@ -68,6 +52,36 @@ export const MainScreen = () => {
       />
     </SafeAreaView>
   );
+};
+
+export const LoadingScreen = () => {
+  return (
+    <SafeAreaView style={styles.container}>
+      <Spinner size="giant" />
+    </SafeAreaView>
+  );
+};
+
+export const MainScreen = () => {
+  const dispatch = useDispatch();
+
+  const items = useSelector((state) => state.items);
+
+  const fetchUserInfo = async () => {
+    if (Object.keys(items).length === 0) {
+      try {
+        const payload = await getUserInfo(USER_ID);
+        dispatch(setState(payload));
+      } catch (err) {
+        throw err;
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchUserInfo();
+  });
+  return Object.keys(items).length === 0 ? <LoadingScreen /> : <GameScreen />;
 };
 
 const styles = StyleSheet.create({

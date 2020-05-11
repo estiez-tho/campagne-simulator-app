@@ -1,4 +1,4 @@
-import SecureStore from "expo-secure-store";
+import * as SecureStore from "expo-secure-store";
 
 export async function getUserInfo(id: string): Promise<void> {
   const userInfo = await SecureStore.getItemAsync("UserInfo");
@@ -8,6 +8,6 @@ export async function getUserInfo(id: string): Promise<void> {
   return JSON.parse(userInfo);
 }
 
-export async function pushPurchases(id: string, purchases: any) {}
-
-export async function updateUserInfo(id: string, updatedFields: any) {}
+export async function updateUserInfo(id: string, data: any) {
+  await SecureStore.setItemAsync("UserInfo", JSON.stringify(data));
+}

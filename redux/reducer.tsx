@@ -6,6 +6,7 @@ import {
   updateGoalBasedOnQuantity,
   updatePrice,
 } from "../gameLogic/index";
+import { updateUserInfo } from "../src/api/index";
 
 export const updateItems = (state = initData, action: actionProps) => {
   let updatedState;
@@ -44,7 +45,7 @@ export const updateItems = (state = initData, action: actionProps) => {
           numberOfReachedGoal
         );
 
-        return {
+        const updatedState = {
           amount: state.amount - previousPrice,
           items: {
             ...state.items,
@@ -58,14 +59,21 @@ export const updateItems = (state = initData, action: actionProps) => {
             },
           },
         };
+
+        updateUserInfo(state._id, updatedState);
+
+        return updatedState;
       }
       return state;
+
     case UPDATE_PROGRESSION:
       updatedState = updateState(state);
+
       return {
         ...state,
         ...updatedState,
       };
+
     default:
       return state;
   }
