@@ -29,14 +29,18 @@ const ProgressBar: React.FC<listItemProps> = ({ id }) => {
       <Layout
         style={[
           styles.progressBar,
-          { backgroundColor: "#E9E9E9", borderColor: "grey", borderWidth: 3 },
+          {
+            backgroundColor: "#E9E9E9",
+            borderColor: "#e00785",
+            borderWidth: 3,
+          },
         ]}
       >
         <Layout
           style={[
             styles.progressBar,
             { width: `${percentage}%` },
-            isMinTime && { backgroundColor: "green" },
+            isMinTime && { backgroundColor: "#e00785" },
           ]}
         />
       </Layout>
@@ -158,14 +162,14 @@ const styles = StyleSheet.create({
     zIndex: -1,
     position: "relative",
     bottom: -5,
-    borderColor: "grey",
+    borderColor: "#00a3d3",
     borderWidth: 2,
   },
 
   quantity: {
     flex: 1,
     fontSize: 20,
-    backgroundColor: "grey",
+    backgroundColor: "#00a3d3",
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
     justifyContent: "center",
@@ -178,9 +182,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#E9E9E9",
     borderWidth: 2,
     borderBottomWidth: 0,
-    borderColor: "grey",
+    borderColor: "#00a3d3",
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
+    fontSize: 5,
   },
   content: {
     flex: 4,
@@ -196,7 +201,7 @@ const styles = StyleSheet.create({
   },
   priceButton: {
     flex: 3,
-    borderColor: "grey",
+    borderColor: "#e00785",
     borderWidth: 4,
     borderRadius: 20,
     borderTopLeftRadius: 0,
@@ -211,7 +216,7 @@ const styles = StyleSheet.create({
     borderRightWidth: 0,
     borderTopLeftRadius: 20,
     borderBottomLeftRadius: 20,
-    backgroundColor: "grey",
+    backgroundColor: "#e00785",
   },
   progressBarContainer: {
     flex: 1,
@@ -228,7 +233,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     borderRadius: 15,
-    borderColor: "grey",
+    borderColor: "#00a3d3",
     borderWidth: 4,
     padding: "10%",
   },

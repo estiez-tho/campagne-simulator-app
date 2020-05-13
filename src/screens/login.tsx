@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, SafeAreaView, FlatList } from "react-native";
-import { Input, Button } from "@ui-kitten/components";
+import { Input, Button, Avatar, Layout, Text } from "@ui-kitten/components";
 import { MainButton } from "../components/mainButton";
 import { createUser } from "../api/backend";
 import { useNavigation } from "@react-navigation/native";
@@ -29,9 +29,23 @@ export const LoginScreen = () => {
       style={{
         flexDirection: "column",
         justifyContent: "center",
+        alignContent: "center",
         height: "100%",
       }}
     >
+      <Layout
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          backgroundColor: "#f2f2f2",
+        }}
+      >
+        <Avatar
+          source={require("../../assets/item1.png")}
+          style={{ height: 200, width: 200 }}
+        />
+      </Layout>
+      <Text style={{ fontSize: 30, padding: 10 }}>Inscription</Text>
       <Input
         placeholder="Username"
         value={username}

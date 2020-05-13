@@ -56,7 +56,7 @@ export const Menu = () => {
 
 const styles = StyleSheet.create({
   text: {
-    padding: 10,
+    padding: 20,
     fontSize: 20,
   },
 
