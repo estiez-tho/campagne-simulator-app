@@ -45,13 +45,17 @@ export async function createUser(email: string, username: string) {
       );
     if (username.length < 4)
       throw new Error("Username doit faire 4 caractères minimum");
-    await http.post("/user/create", {
-      email,
-      username,
-    });
+    const response = await http
+      .post("/user/create", {
+        email,
+        username,
+      })
+      .catch((err) => {
+        throw new Error("Nom d'utilisateur deja pris");
+      });
     return { email };
   } catch (err) {
-    throw new Error("Connection au serveur impossible");
+    throw err;
   }
 }
 

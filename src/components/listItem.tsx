@@ -118,7 +118,7 @@ const DisabledComponent: React.FC<listItemProps> = ({ id, name, price }) => {
       disabled={amount < price}
       onPress={onPress}
     >
-      {`Purchase ${name} : ${price}$`}
+      {`Acheter ${name} : ${price}$`}
     </Button>
   );
 };
