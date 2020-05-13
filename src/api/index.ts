@@ -10,11 +10,9 @@ export async function getUserInfo(data: any) {
   }
 }
 
-export async function updateUserInfo(id: string, data: any, online: boolean) {
+export async function updateUserInfo(id: string, data: any) {
   await storage.updateUserInfo(id, data);
   try {
     await backend.updateUserInfo(id, data);
-  } catch (err) {
-    if (online) alert("Could not connect to backend");
-  }
+  } catch (err) {}
 }

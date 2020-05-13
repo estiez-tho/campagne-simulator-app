@@ -6,19 +6,15 @@ import { useNavigation } from "@react-navigation/native";
 interface mainButtonProps {
   dest: string | null;
   text: string;
-  color: string;
 }
 
-export const MainButton: React.FC<mainButtonProps> = ({
-  dest,
-  text,
-  color,
-}) => {
+export const MainButton: React.FC<mainButtonProps> = ({ dest, text }) => {
   const { navigate } = useNavigation();
 
-  const onPress = () => {
+  const onPress = async () => {
     if (dest) navigate(dest);
   };
+
   return (
     <Button style={styles.button} onPress={onPress}>
       {text}

@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { updateInterval } from "../data/updateInterval";
 import { updateProgression, setState } from "../../redux/actions";
 import { getUserInfo } from "../api/index";
-
+import { LoadingScreen } from "./loading";
 const USER_ID = "5eb83ef7d14cdb201dc4d7da";
 
 const Header = () => {
@@ -50,14 +50,6 @@ export const GameScreen = () => {
         keyExtractor={(item: listItemProps) => item.id}
         contentContainerStyle={styles.contentContainer}
       />
-    </SafeAreaView>
-  );
-};
-
-export const LoadingScreen = () => {
-  return (
-    <SafeAreaView style={styles.container}>
-      <Spinner size="giant" />
     </SafeAreaView>
   );
 };
