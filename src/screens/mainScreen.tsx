@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, SafeAreaView, FlatList } from "react-native";
-import { Layout, Text, Spinner } from "@ui-kitten/components";
+import { Layout, Text, Spinner, Button } from "@ui-kitten/components";
 import { ListItem, listItemProps } from "../components/listItem";
 import { useSelector, useDispatch } from "react-redux";
 import { updateInterval } from "../data/updateInterval";
 import { updateProgression, setState } from "../../redux/actions";
 import { getUserInfo } from "../api/index";
 import { LoadingScreen } from "./loading";
-const USER_ID = "5eb83ef7d14cdb201dc4d7da";
+import { useNavigation } from "@react-navigation/native";
 
 const Header = () => {
   const amount = useSelector((state) => state.amount);
+  const navigation = useNavigation();
   return (
     <Layout style={styles.header}>
+      <Button
+        style={{ height: 20, width: 20 }}
+        onPress={() => {
+          navigation.navigate("Menu");
+        }}
+      />
       <Text
         style={{ fontSize: 30, color: "#E9E9E9" }}
       >{`SCORE : ${amount}`}</Text>
@@ -57,12 +64,13 @@ export const GameScreen = () => {
 export const MainScreen = () => {
   const dispatch = useDispatch();
 
+  const userId = useSelector((state) => state._id);
   const items = useSelector((state) => state.items);
 
   const fetchUserInfo = async () => {
     if (Object.keys(items).length === 0) {
       try {
-        const payload = await getUserInfo(USER_ID);
+        const payload = await getUserInfo(userId);
         dispatch(setState(payload));
       } catch (err) {
         throw err;

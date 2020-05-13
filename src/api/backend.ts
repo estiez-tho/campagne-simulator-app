@@ -13,7 +13,6 @@ async function setToken() {
 
 export async function getUserInfo(id: string): Promise<any> {
   await setToken();
-  alert(JSON.stringify(http.defaults.headers));
   const response = await http.get(`/user/${id}`);
   if (response.status !== 200)
     throw new Error("Could not get User Info on Server");
@@ -22,7 +21,7 @@ export async function getUserInfo(id: string): Promise<any> {
 
 export async function updateUserInfo(id: string, data: any) {
   await setToken();
-  alert(JSON.stringify(http.defaults.headers));
+
   const response = await http.post(`/user/${id}`, data);
 
   if (response.status !== 200)

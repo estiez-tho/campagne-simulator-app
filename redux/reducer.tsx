@@ -59,7 +59,7 @@ export const updateItems = (state = initData, action: actionProps) => {
             },
           },
         };
-
+        alert(JSON.stringify(state));
         updateUserInfo(state._id, updatedState);
 
         return updatedState;

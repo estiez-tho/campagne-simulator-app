@@ -15,6 +15,7 @@ import { updateItems } from "./redux/reducer";
 import { LoginScreen } from "./src/screens/login";
 import { VerifyScreen } from "./src/screens/verify";
 import { LoadingScreen } from "./src/screens/loading";
+import { Menu } from "./src/screens/menu";
 
 const Stack = createStackNavigator();
 
@@ -52,6 +53,7 @@ export default function App() {
               <Stack.Screen name="Login" component={LoginScreen} />
               <Stack.Screen name="Verify" component={VerifyScreen} />
               <Stack.Screen name="Main" component={MainScreen} />
+              <Stack.Screen name="Menu" component={Menu} />
             </Stack.Navigator>
           )}
         </NavigationContainer>
