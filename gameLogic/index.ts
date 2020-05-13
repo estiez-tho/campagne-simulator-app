@@ -51,7 +51,6 @@ export function updateState(state: any) {
   return {
     ...state,
     amount: state.amount + deltaAmount,
-    amountLastUpdated: new Date(),
     items: updatedItems,
   };
 }

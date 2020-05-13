@@ -9,5 +9,9 @@ export async function getUserInfo(id: string): Promise<void> {
 }
 
 export async function updateUserInfo(id: string, data: any) {
-  await SecureStore.setItemAsync("UserInfo", JSON.stringify(data));
+  try {
+    await SecureStore.setItemAsync("UserInfo", JSON.stringify(data));
+  } catch (err) {
+    throw new Error("Impossible de sauvegarder sur le téléphone");
+  }
 }

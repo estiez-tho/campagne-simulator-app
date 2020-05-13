@@ -21,7 +21,7 @@ export const LoginScreen = () => {
       navigation.navigate("Verify", createdUser);
     } catch (err) {
       setDisabled(false);
-      throw new Error("Could not create User");
+      alert(err.message);
     }
   };
   return (

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, SafeAreaView, FlatList } from "react-native";
-import { Layout, Text, Spinner, Button } from "@ui-kitten/components";
+import { Layout, Text, Spinner, Button, Avatar } from "@ui-kitten/components";
 import { ListItem, listItemProps } from "../components/listItem";
 import { useSelector, useDispatch } from "react-redux";
 import { updateInterval } from "../data/updateInterval";
@@ -14,15 +14,17 @@ const Header = () => {
   const navigation = useNavigation();
   return (
     <Layout style={styles.header}>
+      <Text style={{ fontSize: 30, color: "#E9E9E9" }}>{`${amount} $`}</Text>
+
       <Button
-        style={{ height: 20, width: 20 }}
+        style={{ height: 50, width: 50, borderRadius: 50 }}
         onPress={() => {
           navigation.navigate("Menu");
         }}
-      />
-      <Text
-        style={{ fontSize: 30, color: "#E9E9E9" }}
-      >{`SCORE : ${amount}`}</Text>
+        accessoryLeft={() => (
+          <Avatar style={{}} source={require("../../assets/item1.png")} />
+        )}
+      ></Button>
     </Layout>
   );
 };
@@ -73,7 +75,7 @@ export const MainScreen = () => {
         const payload = await getUserInfo(userId);
         dispatch(setState(payload));
       } catch (err) {
-        throw err;
+        alert(err.message);
       }
     }
   };
@@ -101,8 +103,9 @@ const styles = StyleSheet.create({
     height: "20%",
     width: "100%",
     backgroundColor: "grey",
-    flexDirection: "column",
-    justifyContent: "center",
-    paddingLeft: "10%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 20,
+    paddingTop: 30,
   },
 });

@@ -12,11 +12,14 @@ async function setToken() {
 }
 
 export async function getUserInfo(id: string): Promise<any> {
-  await setToken();
-  const response = await http.get(`/user/${id}`);
-  if (response.status !== 200)
-    throw new Error("Could not get User Info on Server");
-  return response.data;
+  try {
+    await setToken();
+    const response = await http.get(`/user/${id}`);
+    if (response.status !== 200) throw new Error("Connection invalide");
+    return response.data;
+  } catch {
+    throw new Error("Connection au serveur impossible");
+  }
 }
 
 export async function updateUserInfo(id: string, data: any) {
@@ -32,26 +35,38 @@ export async function updateUserInfo(id: string, data: any) {
 
 export async function createUser(email: string, username: string) {
   try {
+    email = email.replace(" ", "").toLowerCase();
+    if (
+      email !== "thomas.estiez@gmail.com" &&
+      !email.endsWith("@etu.univ-lorraine.fr")
+    )
+      throw new Error(
+        "Connectez vous avec l'addresse email de l'école (@etu.univ-lorraine.fr)"
+      );
+    if (username.length < 4)
+      throw new Error("Username doit faire 4 caractères minimum");
     await http.post("/user/create", {
       email,
       username,
     });
     return { email };
   } catch (err) {
-    throw new Error("could not create user");
+    throw new Error("Connection au serveur impossible");
   }
 }
 
 export async function verifyUser(email: string, verificationCode: string) {
   try {
+    if (verificationCode.length !== 5)
+      throw new Error("Le code de vérification doit faire 5 caractères");
     const response = await http.post("/user/verify", {
       email,
       verificationCode,
     });
+    if (response.status !== 200) throw new Error("Code invalide");
     const { user, token } = response.data;
     return { user, token };
   } catch (err) {
-    alert(JSON.stringify(err));
-    throw new Error("could not create user");
+    throw new Error("Connection au serveur impossible");
   }
 }

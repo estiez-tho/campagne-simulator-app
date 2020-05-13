@@ -23,7 +23,7 @@ export const VerifyScreen = () => {
       navigation.navigate("Main");
     } catch (err) {
       setDisabled(false);
-      throw new Error("could not verify User");
+      alert(err.message);
     }
   };
   return (

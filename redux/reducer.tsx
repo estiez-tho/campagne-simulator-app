@@ -18,7 +18,6 @@ export const updateItems = (state = initData, action: actionProps) => {
     case PURCHASE_ITEM:
       id = action.itemId;
       if (!id) return state;
-
       let {
         price,
         quantity,
@@ -46,6 +45,7 @@ export const updateItems = (state = initData, action: actionProps) => {
         );
 
         const updatedState = {
+          ...state,
           amount: state.amount - previousPrice,
           items: {
             ...state.items,
@@ -59,8 +59,12 @@ export const updateItems = (state = initData, action: actionProps) => {
             },
           },
         };
-        alert(JSON.stringify(state));
-        updateUserInfo(state._id, updatedState);
+
+        try {
+          updateUserInfo(state._id, updatedState);
+        } catch (err) {
+          alert(err.message);
+        }
 
         return updatedState;
       }
