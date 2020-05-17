@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Campagne Simulator",
-    "slug": "Campagne Simulator",
+    "slug": "CampagneSimulator",
     "platforms": ["ios", "android"],
     "version": "1.0.0",
     "orientation": "portrait",
