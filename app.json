@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "AdVentureCapitalist",
-    "slug": "AdVentureCapitalist",
-    "platforms": ["ios", "android", "web"],
+    "name": "Campagne Simulator",
+    "slug": "Campagne Simulator",
+    "platforms": ["ios", "android"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -19,7 +19,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.randomcompany.adventurecapitalist",
+      "package": "com.randomcompany.campagnesimulator",
       "versionCode": 1
     }
   }

@@ -41,6 +41,7 @@ export async function updateUserInfo(id: string, data: any) {
 export async function createUser(email: string, username: string) {
   try {
     email = email.replace(" ", "").toLowerCase();
+    username = username.replace(" ", "").toLowerCase();
     if (
       email !== "thomas.estiez@gmail.com" &&
       !email.endsWith("@etu.univ-lorraine.fr")

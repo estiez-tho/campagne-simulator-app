@@ -6,8 +6,8 @@ import { createUser } from "../api/backend";
 import { useNavigation } from "@react-navigation/native";
 
 export const LoginScreen = () => {
-  const [username, setUsername] = useState("test");
-  const [mail, setMail] = useState("thomas.estiez@gmail.com");
+  const [username, setUsername] = useState("");
+  const [mail, setMail] = useState("");
   const [disabled, setDisabled] = useState(false);
   const [params, setParams] = useState({});
 
@@ -41,8 +41,8 @@ export const LoginScreen = () => {
         }}
       >
         <Avatar
-          source={require("../../assets/item1.png")}
-          style={{ height: 200, width: 200 }}
+          source={require("../../assets/logo.png")}
+          style={{ height: 200, width: 200, borderRadius: 200 }}
         />
       </Layout>
       <Text style={{ fontSize: 30, padding: 10 }}>Inscription</Text>

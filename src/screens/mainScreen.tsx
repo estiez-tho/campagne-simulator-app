@@ -17,12 +17,15 @@ const Header = () => {
       <Text style={{ fontSize: 30, color: "#E9E9E9" }}>{`${amount} $`}</Text>
 
       <Button
-        style={{ height: 50, width: 50, borderRadius: 50 }}
+        style={{ height: 70, width: 70, borderRadius: 70, padding: 0 }}
         onPress={() => {
           navigation.navigate("Menu");
         }}
         accessoryLeft={() => (
-          <Avatar style={{}} source={require("../../assets/item1.png")} />
+          <Avatar
+            style={{ height: 70, width: 70 }}
+            source={require("../../assets/logo.png")}
+          />
         )}
       ></Button>
     </Layout>
