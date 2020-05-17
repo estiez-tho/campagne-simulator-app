@@ -70,7 +70,7 @@ export const Menu = () => {
         }}
         disabled={disabled}
       >
-        Delete
+        Supprimer le compte
       </Button>
       <Button
         style={styles.logout}
@@ -82,7 +82,7 @@ export const Menu = () => {
         Log out
       </Button>
       <Button style={styles.goBack} onPress={goBack} disabled={disabled}>
-        Go Back
+        Revenir en arrière
       </Button>
     </SafeAreaView>
   );
