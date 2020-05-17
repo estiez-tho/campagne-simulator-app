@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, SafeAreaView, FlatList } from "react-native";
+import { StyleSheet, SafeAreaView, Alert } from "react-native";
 import { Input, Button, Text } from "@ui-kitten/components";
-import { MainButton } from "../components/mainButton";
-import { createUser } from "../api/backend";
+import { deleteUser } from "../api/backend";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import * as SecureStore from "expo-secure-store";
 export const Menu = () => {
   const email = useSelector((state) => state.email);
   const username = useSelector((state) => state.username);
+  const userId = useSelector((state) => state._id);
   const navigation = useNavigation();
 
   const [disabled, setDisabled] = useState(false);
@@ -22,6 +22,31 @@ export const Menu = () => {
       setDisabled(false);
       alert("Could not log out");
     }
+  };
+
+  const deleteUserFromBackend = async () => {
+    try {
+      setDisabled(true);
+      await deleteUser(userId);
+      await SecureStore.deleteItemAsync("UserInfo");
+      await SecureStore.deleteItemAsync("token");
+      navigation.navigate("Login");
+    } catch (err) {
+      setDisabled(false);
+      alert("Une erreur est survenue");
+    }
+  };
+
+  const checkBeforeDeleting = () => {
+    Alert.alert("Attention", "Voulez vous vraiment supprimer le compte ?", [
+      {
+        text: "Oui",
+        onPress: () => {
+          deleteUserFromBackend();
+        },
+      },
+      { text: "Non", onPress: () => {} },
+    ]);
   };
 
   const goBack = () => {
@@ -38,6 +63,15 @@ export const Menu = () => {
     >
       <Text style={styles.text}>{email}</Text>
       <Text style={styles.text}>{username}</Text>
+      <Button
+        style={styles.delete}
+        onPress={() => {
+          checkBeforeDeleting();
+        }}
+        disabled={disabled}
+      >
+        Delete
+      </Button>
       <Button
         style={styles.logout}
         onPress={() => {
@@ -61,7 +95,14 @@ const styles = StyleSheet.create({
   },
 
   logout: {
+    marginTop: "10%",
+    backgroundColor: "orange",
+    borderColor: "orange",
+    color: "white",
+  },
+  delete: {
     backgroundColor: "red",
+    borderColor: "red",
     color: "white",
   },
   goBack: {

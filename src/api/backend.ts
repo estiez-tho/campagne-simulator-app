@@ -5,10 +5,15 @@ const http = axios.create({
 });
 
 async function setToken() {
-  if (http.defaults.headers.post["Authorization"]) return;
+  if (
+    http.defaults.headers.post["Authorization"] &&
+    http.defaults.headers.delete["Authorization"]
+  )
+    return;
   const token = await SecureStore.getItemAsync("token");
   if (!token) throw new Error("could not find token");
   http.defaults.headers.post["Authorization"] = `Bearer ${token}`;
+  http.defaults.headers.delete["Authorization"] = `Bearer ${token}`;
 }
 
 export async function getUserInfo(id: string): Promise<any> {
@@ -72,5 +77,15 @@ export async function verifyUser(email: string, verificationCode: string) {
     return { user, token };
   } catch (err) {
     throw new Error("Connection au serveur impossible");
+  }
+}
+
+export async function deleteUser(userId: string) {
+  try {
+    await setToken();
+    const response = await http.delete(`/user/${userId}`);
+    if (response.status !== 200) throw new Error("Deletion failed");
+  } catch (err) {
+    throw new Error("Une erreur est survenue");
   }
 }
