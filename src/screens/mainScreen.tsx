@@ -3,11 +3,18 @@ import { StyleSheet, SafeAreaView, FlatList } from "react-native";
 import { Layout, Text, Spinner, Button, Avatar } from "@ui-kitten/components";
 import { ListItem, listItemProps } from "../components/listItem";
 import { useSelector, useDispatch } from "react-redux";
-import { updateInterval } from "../data/updateInterval";
-import { updateProgression, setState } from "../../redux/actions";
+import {
+  updateInterval,
+  syncInterval,
+  syncThreshHold,
+} from "../data/updateInterval";
+import { updateProgression, setState, syncTime } from "../../redux/actions";
 import { getUserInfo } from "../api/index";
 import { LoadingScreen } from "./loading";
 import { useNavigation } from "@react-navigation/native";
+import * as SecureStore from "expo-secure-store";
+import { getTime } from "../api/backend";
+import { Response } from "express";
 
 const Header = () => {
   const amount = useSelector((state) => state.amount);
@@ -37,9 +44,13 @@ export const GameScreen = () => {
 
   const items = useSelector((state) => state.items);
 
+  const deviceTime = useSelector((state) => state.deviceTime);
+
   const updateTimer = () => {
     return setInterval(() => {
-      if (Object.keys(items).length > 0) dispatch(updateProgression());
+      const timeDrift = new Date().getTime() - new Date(deviceTime).getTime();
+      if (Object.keys(items).length > 0 && Math.abs(timeDrift) < syncThreshHold)
+        dispatch(updateProgression());
     }, updateInterval);
   };
 
@@ -71,11 +82,22 @@ export const MainScreen = () => {
 
   const userId = useSelector((state) => state._id);
   const items = useSelector((state) => state.items);
+  const deviceTime = useSelector((state) => state.deviceTime);
+  const serverTime = useSelector((state) => state.serverTime);
+  const [serverUnreachable, setServerUnreachable] = useState(false);
+  const [timeDrift, setTimeDrift] = useState(0);
 
   const fetchUserInfo = async () => {
     if (Object.keys(items).length === 0) {
       try {
-        const payload = await getUserInfo(userId);
+        let payload;
+        if (userId) {
+          payload = await getUserInfo(userId);
+        } else {
+          const id = await SecureStore.getItemAsync("userId");
+          payload = await getUserInfo(id);
+        }
+        payload.deviceTime = new Date();
         dispatch(setState(payload));
       } catch (err) {
         alert(err.message);
@@ -83,10 +105,43 @@ export const MainScreen = () => {
     }
   };
 
+  const syncWithServer = async () => {
+    try {
+      setTimeDrift(new Date().getTime() - new Date(deviceTime).getTime());
+      if (Math.abs(timeDrift) > syncInterval) {
+        const response = await getTime();
+        setServerUnreachable(false);
+        const newDeviceTime = new Date();
+        const newServerTime = new Date(response.serverTime);
+        dispatch(syncTime(new Date(newServerTime), newDeviceTime));
+      }
+    } catch (err) {
+      setServerUnreachable(true);
+    }
+  };
+
+  const syncTimer = () => {
+    return setInterval(() => {
+      syncWithServer();
+    }, syncInterval);
+  };
+
+  useEffect(() => {
+    const syncInterval = syncTimer();
+    return () => {
+      clearInterval(syncInterval);
+    };
+  });
+
   useEffect(() => {
     fetchUserInfo();
   });
-  return Object.keys(items).length === 0 ? <LoadingScreen /> : <GameScreen />;
+
+  return Object.keys(items).length === 0 || timeDrift > 3 * syncThreshHold ? (
+    <LoadingScreen />
+  ) : (
+    <GameScreen />
+  );
 };
 
 const styles = StyleSheet.create({

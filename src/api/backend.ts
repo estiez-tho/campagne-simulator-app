@@ -1,19 +1,28 @@
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 const http = axios.create({
-  baseURL: "https://campagne-simulator.herokuapp.com",
+  baseURL: "http://192.168.86.247:3000",
 });
 
 async function setToken() {
   if (
     http.defaults.headers.post["Authorization"] &&
-    http.defaults.headers.delete["Authorization"]
+    http.defaults.headers.delete["Authorization"] &&
+    http.defaults.headers.get["Authorization"]
   )
     return;
   const token = await SecureStore.getItemAsync("token");
   if (!token) throw new Error("could not find token");
   http.defaults.headers.post["Authorization"] = `Bearer ${token}`;
   http.defaults.headers.delete["Authorization"] = `Bearer ${token}`;
+  http.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+}
+
+async function disableCache() {
+  await http.interceptors.request.use((config) => {
+    config.headers["get"]["Cache-Control"] = "no-cache";
+    return config;
+  });
 }
 
 export async function getUserInfo(id: string): Promise<any> {
@@ -88,5 +97,16 @@ export async function deleteUser(userId: string) {
     if (response.status !== 200) throw new Error("Deletion failed");
   } catch (err) {
     throw new Error("Une erreur est survenue");
+  }
+}
+
+export async function getTime() {
+  try {
+    await disableCache();
+    await setToken();
+    const response = await http.get("/time");
+    return response.data;
+  } catch {
+    //throw new Error("Impossible de se synchroniser avec le serveur");
   }
 }

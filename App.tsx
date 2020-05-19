@@ -29,7 +29,8 @@ export default function App() {
   const isLoggedIn = async () => {
     try {
       const token = await SecureStore.getItemAsync("token");
-      if (token) setInitialRouteName("Main");
+      const userId = await SecureStore.getItemAsync("userId");
+      if (token && userId) setInitialRouteName("Main");
       setLoading(false);
     } catch (err) {
       alert("Could not load the app");

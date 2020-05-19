@@ -1,4 +1,15 @@
 // Update only if a whole cycle has been performed
+export function getCurrentServerDate(
+  lastServerDate: Date,
+  lastDeviceDate: Date
+) {
+  lastServerDate = new Date(lastServerDate);
+  lastDeviceDate = new Date(lastDeviceDate);
+  return new Date(
+    lastServerDate.getTime() + new Date().getTime() - lastDeviceDate.getTime()
+  );
+}
+
 function updateDurationBasedOnNumberOfReachedGoal(
   duration: number,
   numberOfReachedGoal: number
@@ -19,7 +30,10 @@ export function updateState(state: any) {
       numberOfReachedGoal,
     } = updatedItems[id];
 
-    const currentTime = new Date();
+    const currentTime = getCurrentServerDate(
+      state.serverTime,
+      state.deviceTime
+    );
 
     if (typeof progressionLastUpdated === "string")
       progressionLastUpdated = new Date(progressionLastUpdated);
@@ -29,7 +43,6 @@ export function updateState(state: any) {
     const numberOfCycles = Math.floor((progression + deltaTime) / duration);
 
     const cycleFinished = Math.floor((progression + deltaTime) / duration) >= 1;
-
     progression = (progression + deltaTime) % duration;
 
     if (cycleFinished) {
@@ -44,7 +57,7 @@ export function updateState(state: any) {
       ...updatedItems[id],
       progression,
       duration,
-      progressionLastUpdated: new Date(),
+      progressionLastUpdated: currentTime,
       numberOfReachedGoal,
     };
   });

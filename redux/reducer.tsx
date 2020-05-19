@@ -1,10 +1,16 @@
-import { PURCHASE_ITEM, UPDATE_PROGRESSION, SET_STATE } from "./actionTypes";
+import {
+  PURCHASE_ITEM,
+  UPDATE_PROGRESSION,
+  SET_STATE,
+  SYNC_TIME,
+} from "./actionTypes";
 import { actionProps } from "./actions";
 import { initData } from "../src/data/initData";
 import {
   updateState,
   updateGoalBasedOnQuantity,
   updatePrice,
+  getCurrentServerDate,
 } from "../gameLogic/index";
 import { updateUserInfo } from "../src/api/index";
 
@@ -13,6 +19,9 @@ export const updateItems = (state = initData, action: actionProps) => {
   let id;
 
   switch (action.type) {
+    case SYNC_TIME:
+      const { serverTime, deviceTime } = action.payload;
+      return { ...state, serverTime, deviceTime };
     case SET_STATE:
       return updateState(action.payload);
     case PURCHASE_ITEM:
@@ -32,7 +41,10 @@ export const updateItems = (state = initData, action: actionProps) => {
         price = updatePrice(price);
 
         if (quantity === 0) {
-          progressionLastUpdated = new Date();
+          progressionLastUpdated = getCurrentServerDate(
+            state.serverTime,
+            state.deviceTime
+          );
           progression = 0;
         }
 

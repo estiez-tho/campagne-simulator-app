@@ -6,6 +6,8 @@ import { createUser, verifyUser } from "../api/backend";
 import { updateUserInfo } from "../api/storage";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
+import { useDispatch } from "react-redux";
+import { setState } from "../../redux/actions";
 
 export const VerifyScreen = () => {
   const navigation = useNavigation();
@@ -13,13 +15,15 @@ export const VerifyScreen = () => {
   const { email } = route.params;
   const [verificationCode, setVerificationCode] = useState("");
   const [disabled, setDisabled] = useState(false);
-
+  const dispatch = useDispatch();
   const verifyAndRedirect = async () => {
     try {
       setDisabled(true);
       const { token, user } = await verifyUser(email, verificationCode);
-      await updateUserInfo(user._id, user);
-      await SecureStore.setItemAsync("token", token);
+      await await SecureStore.setItemAsync("token", token);
+      await SecureStore.setItemAsync("userId", user._id);
+      user.deviceTime = new Date();
+      dispatch(setState(user));
       navigation.navigate("Main");
     } catch (err) {
       setDisabled(false);

@@ -4,12 +4,13 @@ import {
   PURCHASE_ITEM,
   UPDATE_PROGRESSION,
   SET_STATE,
+  SYNC_TIME,
 } from "./actionTypes";
 
 export interface actionProps {
   type: string;
-  itemId: string;
-  previousTime?: number;
+  itemId?: string;
+  payload?: any;
 }
 
 export const increase = (amount: number) => {
@@ -30,4 +31,8 @@ export const updateProgression = () => {
 
 export const setState = (payload: any) => {
   return { type: SET_STATE, payload };
+};
+
+export const syncTime = (serverTime: Date, deviceTime: Date) => {
+  return { type: SYNC_TIME, payload: { serverTime, deviceTime } };
 };
