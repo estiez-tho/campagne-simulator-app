@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 const http = axios.create({
-  baseURL: "http://192.168.86.247:3000",
+  baseURL: "https://campagne-simulator.herokuapp.com",
 });
 
 async function setToken() {
