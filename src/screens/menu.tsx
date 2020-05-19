@@ -62,7 +62,7 @@ export const Menu = () => {
       }}
     >
       <Text style={styles.text}>{email}</Text>
-      <Text style={styles.text}>{username}</Text>
+      <Text style={styles.text}>Username : {username}</Text>
       <Button
         style={styles.delete}
         onPress={() => {
@@ -71,15 +71,6 @@ export const Menu = () => {
         disabled={disabled}
       >
         Supprimer le compte
-      </Button>
-      <Button
-        style={styles.logout}
-        onPress={() => {
-          logOut();
-        }}
-        disabled={disabled}
-      >
-        Log out
       </Button>
       <Button style={styles.goBack} onPress={goBack} disabled={disabled}>
         Revenir en arrière

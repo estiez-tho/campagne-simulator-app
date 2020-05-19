@@ -83,7 +83,7 @@ const ItemDescription: React.FC<listItemProps> = ({ id, name }) => {
       <Avatar style={styles.icon} source={image} />
       <Layout style={{ flex: 1 }}>
         <Layout style={styles.title}>
-          <Text>{name}</Text>
+          <Text style={{ fontSize: 8 }}>{name}</Text>
         </Layout>
         <Layout style={styles.quantity}>
           <Text style={{ color: "#E9E9E9" }}>{`x${quantity}`}</Text>
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     borderColor: "#00a3d3",
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    fontSize: 5,
+    padding: 5,
   },
   content: {
     flex: 4,
