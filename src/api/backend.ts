@@ -50,7 +50,13 @@ export async function updateUserInfo(id: string, data: any) {
 export async function createUser(email: string, username: string) {
   try {
     email = email.replace(" ", "").toLowerCase();
-    username = username.replace(" ", "").toLowerCase();
+    username = username.replace(" ", "");
+
+    if (!username.match(/^[a-z0-9]+$/i))
+      throw new Error(
+        "Le username ne doit contenir que des lettres ou des chiffres"
+      );
+
     if (
       email !== "thomas.estiez@gmail.com" &&
       !email.endsWith("@etu.univ-lorraine.fr")
@@ -106,7 +112,5 @@ export async function getTime() {
     await setToken();
     const response = await http.get("/time");
     return response.data;
-  } catch {
-    //throw new Error("Impossible de se synchroniser avec le serveur");
-  }
+  } catch {}
 }

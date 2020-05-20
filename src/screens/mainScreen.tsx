@@ -13,7 +13,7 @@ import { getUserInfo } from "../api/index";
 import { LoadingScreen } from "./loading";
 import { useNavigation } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
-import { getTime } from "../api/backend";
+import { getTime, updateUserInfo } from "../api/backend";
 import { Response } from "express";
 
 const Header = () => {
@@ -80,7 +80,6 @@ export const GameScreen = () => {
 export const MainScreen = () => {
   const dispatch = useDispatch();
 
-  const userId = useSelector((state) => state._id);
   const items = useSelector((state) => state.items);
   const deviceTime = useSelector((state) => state.deviceTime);
   const serverTime = useSelector((state) => state.serverTime);
@@ -90,13 +89,14 @@ export const MainScreen = () => {
   const fetchUserInfo = async () => {
     if (Object.keys(items).length === 0) {
       try {
-        let payload;
-        if (userId) {
-          payload = await getUserInfo(userId);
-        } else {
-          const id = await SecureStore.getItemAsync("userId");
-          payload = await getUserInfo(id);
+        const id = await SecureStore.getItemAsync("userId");
+        const userInfo = await SecureStore.getItemAsync("UserInfo");
+        if (userInfo) {
+          await updateUserInfo(id, JSON.parse(userInfo));
+          await SecureStore.deleteItemAsync("UserInfo");
         }
+        if (!id) throw new Error("Aucun identifiants trouvés");
+        const payload = await getUserInfo(id);
         payload.deviceTime = new Date();
         dispatch(setState(payload));
       } catch (err) {

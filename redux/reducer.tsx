@@ -13,6 +13,7 @@ import {
   getCurrentServerDate,
 } from "../gameLogic/index";
 import { updateUserInfo } from "../src/api/index";
+import * as SecureStore from "expo-secure-store";
 
 export const updateItems = (state = initData, action: actionProps) => {
   let updatedState;
@@ -74,8 +75,10 @@ export const updateItems = (state = initData, action: actionProps) => {
 
         try {
           updateUserInfo(state._id, updatedState);
+          SecureStore.deleteItemAsync("UserInfo");
         } catch (err) {
           alert(err.message);
+          SecureStore.setItemAsync("UserInfo", JSON.stringify(updatedState));
         }
 
         return updatedState;
