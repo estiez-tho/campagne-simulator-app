@@ -19,7 +19,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.randomcompany.campagnesimulator",
+      "package": "com.example.campagnesimulator",
       "versionCode": 1
     }
   }

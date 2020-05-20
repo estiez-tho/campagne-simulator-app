@@ -137,7 +137,8 @@ export const MainScreen = () => {
     fetchUserInfo();
   });
 
-  return Object.keys(items).length === 0 || timeDrift > 3 * syncThreshHold ? (
+  return Object.keys(items).length === 0 ||
+    Math.abs(timeDrift) > syncThreshHold ? (
     <LoadingScreen />
   ) : (
     <GameScreen />
